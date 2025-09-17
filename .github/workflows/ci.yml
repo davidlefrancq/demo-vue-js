@@ -10,31 +10,52 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '24.x'
-      - run: npm ci
-      - run: npm run lint
+          node-version: 24
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Run Lint
+        run: npm run lint
 
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '24.x'
-      - run: npm ci
-      - run: npm run build
+          node-version: 24
+      
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Run build
+        run: npm run build
 
   test:
     name: Unit Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '24.x'
-      - run: npm ci
-      - run: npm run test:unit
+          node-version: 24
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:unit
