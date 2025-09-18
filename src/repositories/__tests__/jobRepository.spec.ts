@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { JobRepository } from '../jobRepository';
+import { JobRepository } from '../JobRepository';
 import { GetAllJobsError, GetJobByIdError, UpdateJobError } from '../errors/JobRepositoryError';
 import jobsSeed from '../../data/jobs.seed.json';
 

@@ -20,7 +20,7 @@ export class JobRepository {
    */
   async list(): Promise<JobType[]> {
     try {
-      return this.jobs.map((j) => JobSchema.parse(JobSanitizer.sanitize(j)));
+      return this.jobs.map((j) => JobSchema.parse(j));
     } catch {
       throw new GetAllJobsError();
     }
@@ -38,7 +38,7 @@ export class JobRepository {
     if (!job) throw new GetJobByIdError();
 
     try {
-      return JobSchema.parse(JobSanitizer.sanitize(job));
+      return JobSchema.parse(job);
     } catch {
       throw new GetJobByIdError();
     }
