@@ -3,6 +3,7 @@ import { CompanyRepository } from '../CompanyRepository';
 import { GetAllCompaniesError, GetCompanyByIdError, UpdateCompanyError } from '../errors/CompanyRepositoryError';
 import companiesSeed from '../../data/companies.seed.json';
 
+const HACKER_INJECTION = '<script>alert("xss")</script>';
 const validId = companiesSeed[0].id;
 const invalidId = 'not-found-id';
 const createRepo = () => new CompanyRepository();
@@ -40,12 +41,12 @@ describe('CompanyRepository', () => {
   });
 
   it('updatePartial() with injected code in name', async () => {
-    const maliciousUpdate = { name: '<script>alert("xss")</script>' };
+    const maliciousUpdate = { name: HACKER_INJECTION };
     await expect(repo.updatePartial(validId, maliciousUpdate)).rejects.toThrow(UpdateCompanyError);
   });
 
   it('updatePartial() with injected code in location', async () => {
-    const maliciousUpdate = { location: '<img src=x onerror=alert("xss") />' };
+    const maliciousUpdate = { location: HACKER_INJECTION };
     const updated = await repo.updatePartial(validId, maliciousUpdate);
     expect(updated.location).toBe('');
     const fetched = await repo.getById(validId);
@@ -53,7 +54,7 @@ describe('CompanyRepository', () => {
   });
 
   it('updatePartial() with injected code in size', async () => {
-    const maliciousUpdate = { size: '<script>alert("xss")</script>' as unknown as number };
+    const maliciousUpdate = { size: HACKER_INJECTION as unknown as number };
     const updated = await repo.updatePartial(validId, maliciousUpdate);
     expect(updated.size).toBe(0);
     const fetched = await repo.getById(validId);
@@ -61,7 +62,7 @@ describe('CompanyRepository', () => {
   });
 
   it('updatePartial() with injected code in industry', async () => {
-    const maliciousUpdate = { industry: '<iframe src="javascript:alert(\'xss\')"></iframe>' };
+    const maliciousUpdate = { industry: HACKER_INJECTION };
     const updated = await repo.updatePartial(validId, maliciousUpdate);
     expect(updated.industry).toBe('');
     const fetched = await repo.getById(validId);
