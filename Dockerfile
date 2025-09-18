@@ -12,7 +12,7 @@ COPY package*.json ./
 # install project dependencies
 RUN npm ci
 
-# copie les fichiers et dossiers du projet dans le dossier de travail (par exemple : le dossier 'app')
+# copy project files and folders to the working directory (e.g., the 'app' folder)
 COPY src ./src
 COPY public ./public
 COPY env.d.ts ./
