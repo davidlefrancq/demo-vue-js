@@ -70,5 +70,23 @@
     "salary": 60000,
     "status": "Hired",
     "like": "Disliked"
+  },
+  {
+    "id": "job-9",
+    "title": "Full Stack Developer",
+    "city": "Strasbourg",
+    "remote": true,
+    "salary": 45000,
+    "status": "Applied",
+    "like": "None"
+  },
+  {
+    "id": "job-10",
+    "title": "System Administrator",
+    "city": "Saint-Étienne",
+    "remote": false,
+    "salary": 40000,
+    "status": "UnderReview",
+    "like": "Liked"
   }
 ]
