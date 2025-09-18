@@ -33,8 +33,10 @@ export class CompanyRepository {
    */
   async getById(id: string): Promise<CompanyType> {
     if (!id) throw new GetCompanyByIdError();
+
     const company = this.companies.find(c => c.id === id);
     if (!company) throw new GetCompanyByIdError();
+
     try {
       return CompanySchema.parse(company);
     } catch {
@@ -51,11 +53,14 @@ export class CompanyRepository {
   async updatePartial(id: string, update: Partial<CompanyType>): Promise<CompanyType> {
     if (!id) throw new UpdateCompanyError();
     if (!update || Object.keys(update).length === 0) throw new UpdateCompanyError();
+
     const index = this.companies.findIndex(c => c.id === id);
     if (index === -1) throw new UpdateCompanyError();
+
     try {
       const merged = { ...this.companies[index], ...update };
-      const validated = CompanySchema.parse(merged);
+      const sanitized = CompanySanitizer.sanitize(merged);
+      const validated = CompanySchema.parse(sanitized);
       this.companies[index] = validated;
       return validated;
     } catch {
