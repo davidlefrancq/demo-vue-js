@@ -9,7 +9,7 @@ WORKDIR /app
 # copy 'package.json' and 'package-lock.json' (if available)
 COPY package*.json ./
 
-# installe les dépendances du projet
+# install project dependencies
 RUN npm ci
 
 # copie les fichiers et dossiers du projet dans le dossier de travail (par exemple : le dossier 'app')
