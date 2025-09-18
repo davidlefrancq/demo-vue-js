@@ -6,7 +6,7 @@ RUN npm install -g http-server
 # set the 'app' folder as working directory
 WORKDIR /app
 
-# copie 'package.json' et 'package-lock.json' (si disponible)
+# copy 'package.json' and 'package-lock.json' (if available)
 COPY package*.json ./
 
 # installe les dépendances du projet
