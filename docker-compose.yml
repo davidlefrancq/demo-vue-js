@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vuejs_demo_app
+    ports:
+      - "8080:8080" # Expose the http-server port
+    volumes:
+      - data_volume:/app:ro # Read-only mount for production, change to rw for development
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - vuejs_network
+
+volumes:
+  data_volume:
+
+networks:
+  vuejs_network:
+    driver: bridge
