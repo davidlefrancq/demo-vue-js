@@ -70,8 +70,3 @@ const sizeClass = computed(() => {
 });
 </script>
 
-<script lang="ts">
-export default {
-  name: 'DefaultButton'
-}
-</script>
