@@ -90,8 +90,3 @@ export class JobsService {
     this.persistStatuses();
   }
 }
-
-// Facade composable
-export function useJobsService() {
-  return new JobsService();
-}
