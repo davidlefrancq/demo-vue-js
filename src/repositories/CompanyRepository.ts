@@ -2,6 +2,7 @@ import companiesSeed from '../data/companies.seed.json';
 import { CompanySchema } from '@/models/Company.schema';
 import type { CompanyType } from '@/models/Company.schema';
 import { GetAllCompaniesError, GetCompanyByIdError, UpdateCompanyError } from './errors/CompanyRepositoryError';
+import { CompanySanitizer } from '@/models/CompanySanitizer';
 
 export class CompanyRepository {
   private companies: CompanyType[];
@@ -9,7 +10,7 @@ export class CompanyRepository {
   constructor() {
     // Initialize the in-memory companies array
     this.companies = CompanySchema.array().parse(
-      companiesSeed as unknown as CompanyType[]
+      (companiesSeed as unknown as CompanyType[]).map(c => CompanySanitizer.sanitize(c))
     );
   }
 
