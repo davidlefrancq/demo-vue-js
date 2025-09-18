@@ -26,6 +26,30 @@ describe('CompanySchema', () => {
     expect(result.success).toBe(false);
   });
 
+  it('should reject a company with empty fields', () => {
+    const invalidCompany = {
+      id: '',
+      name: '',
+      location: '',
+      size: 0,
+      industry: '',
+    };
+    const result = CompanySchema.safeParse(invalidCompany);
+    expect(result.success).toBe(false);
+  });
+
+  it('should validate a company with some empty fields', () => {
+    const invalidCompany = {
+      id: '',
+      name: 'Acme',
+      location: '',
+      size: 0,
+      industry: '',
+    };
+    const result = CompanySchema.safeParse(invalidCompany);
+    expect(result.success).toBe(true);
+  });
+
   it('should reject a company with wrong types', () => {
     const invalidCompany = {
       id: '1',
