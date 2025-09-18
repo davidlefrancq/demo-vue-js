@@ -1,4 +1,4 @@
-# Step 1 : Build
+# STEP 1 : Build
 FROM node:lts-alpine AS build
 
 # Install a simple http server to serve static content
@@ -25,10 +25,10 @@ COPY tsconfig.node.json ./
 COPY tsconfig.vitest.json ./
 COPY vite.config.ts ./
 
-# build the project
+# Build the project
 RUN npm run build
 
-# Step 2 : Image finale, uniquement avec le build
+# STEP 2 : Image finale, uniquement avec le build
 FROM node:lts-alpine AS production
 
 # Set the 'app' folder as working directory
