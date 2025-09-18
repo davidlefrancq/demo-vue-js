@@ -24,7 +24,7 @@ COPY tsconfig.node.json ./
 COPY tsconfig.vitest.json ./
 COPY vite.config.ts ./
 
-# construit l'app pour la production en la minifiant
+# build the project
 RUN npm run build
 
 EXPOSE 8080
