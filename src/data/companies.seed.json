@@ -1,0 +1,37 @@
+[
+  {
+    "id": "1",
+    "name": "Tech Innovators",
+    "location": "Paris, France",
+    "size": 120,
+    "industry": "Software"
+  },
+  {
+    "id": "2",
+    "name": "Green Solutions",
+    "location": "Lyon, France",
+    "size": 45,
+    "industry": "Environmental"
+  },
+  {
+    "id": "3",
+    "name": "HealthFirst",
+    "location": "Marseille, France",
+    "size": 200,
+    "industry": "Healthcare"
+  },
+  {
+    "id": "4",
+    "name": "EduSmart",
+    "location": "Toulouse, France",
+    "size": 80,
+    "industry": "Education"
+  },
+  {
+    "id": "5",
+    "name": "FinTech Pro",
+    "location": "Nice, France",
+    "size": 60,
+    "industry": "Finance"
+  }
+]

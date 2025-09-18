@@ -2,7 +2,10 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { JobRepository } from '../JobRepository';
 import { GetAllJobsError, GetJobByIdError, UpdateJobError } from '../errors/JobRepositoryError';
 import jobsSeed from '../../data/jobs.seed.json';
+import { JobStatus } from '@/models/JobStatus';
+import { JobLikeState } from '@/models/JobLikeState';
 
+const HACKER_INJECTION = '<script>alert("xss")</script>';
 const getFirstJobId = () => (jobsSeed[0] as { id: string }).id;
 
 describe('JobRepository', () => {
@@ -42,6 +45,48 @@ describe('JobRepository', () => {
     // Should persist in repo
     const job = await repo.getById(id);
     expect(job.title).toBe(newTitle);
+  });
+
+  it('updatePartial() with injected code in title', async () => {
+    const maliciousUpdate = { title: HACKER_INJECTION };
+    await expect(repo.updatePartial(getFirstJobId(), maliciousUpdate)).rejects.toThrow(UpdateJobError);
+  });
+
+  it('updatePartial() with injected code in city', async () => {
+    const maliciousUpdate = { city: HACKER_INJECTION };
+    await expect(repo.updatePartial(getFirstJobId(), maliciousUpdate)).rejects.toThrow(UpdateJobError);
+  });
+
+  it('updatePartial() with injected code in remote', async () => {
+    const maliciousUpdate = { remote: HACKER_INJECTION as unknown as boolean };
+    const updated = await repo.updatePartial(getFirstJobId(), maliciousUpdate);
+    expect(updated.remote).toBe(false);
+    const fetched = await repo.getById(getFirstJobId());
+    expect(fetched.remote).toBe(false);
+  });
+
+  it('updatePartial() with injected code in salary', async () => {
+    const maliciousUpdate = { salary: HACKER_INJECTION as unknown as number };
+    const updated = await repo.updatePartial(getFirstJobId(), maliciousUpdate);
+    expect(updated.salary).toBe(0);
+    const fetched = await repo.getById(getFirstJobId());
+    expect(fetched.salary).toBe(0);
+  });
+
+  it('updatePartial() with injected code in status', async () => {
+    const maliciousUpdate = { status: HACKER_INJECTION as unknown as JobStatus };
+    const updated = await repo.updatePartial(getFirstJobId(), maliciousUpdate);
+    expect(updated.status).toBe(JobStatus.None);
+    const fetched = await repo.getById(getFirstJobId());
+    expect(fetched.status).toBe(JobStatus.None);
+  });
+
+  it('updatePartial() with injected code in like', async () => {
+    const maliciousUpdate = { like: HACKER_INJECTION as unknown as JobLikeState };
+    const updated = await repo.updatePartial(getFirstJobId(), maliciousUpdate);
+    expect(updated.like).toBe(JobLikeState.None);
+    const fetched = await repo.getById(getFirstJobId());
+    expect(fetched.like).toBe(JobLikeState.None);
   });
 
   it('updatePartial() throws if id is missing', async () => {
