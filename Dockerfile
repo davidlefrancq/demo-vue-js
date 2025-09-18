@@ -1,6 +1,6 @@
 FROM node:lts-alpine
 
-# installe un simple serveur http pour servir un contenu statique
+# install a simple http server to serve static content
 RUN npm install -g http-server
 
 # définit le dossier 'app' comme dossier de travail
