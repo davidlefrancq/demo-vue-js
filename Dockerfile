@@ -3,7 +3,7 @@ FROM node:lts-alpine
 # install a simple http server to serve static content
 RUN npm install -g http-server
 
-# définit le dossier 'app' comme dossier de travail
+# set the 'app' folder as working directory
 WORKDIR /app
 
 # copie 'package.json' et 'package-lock.json' (si disponible)
