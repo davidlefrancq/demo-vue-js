@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: vuejs_demo_app
     ports:
-      - "8080:8080" # Expose le port du serveur http-server
+      - "8080:8080" # Expose the http-server port
     volumes:
       - data_volume:/app:ro # Montage en lecture seule pour la prod, modifie en rw pour dev
     environment:
