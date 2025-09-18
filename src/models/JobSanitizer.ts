@@ -26,8 +26,8 @@ export class JobSanitizer {
       city: dataSanitized.city || '',
       remote: typeof dataSanitized.remote === 'boolean' ? dataSanitized.remote : false,
       salary: typeof dataSanitized.salary === 'number' ? dataSanitized.salary : 0,
-      status: dataSanitized.status!,
-      like: dataSanitized.like!,
+      status: dataSanitized.status || JobStatus.None,
+      like: dataSanitized.like || JobLikeState.None,
     };
   }
 }

@@ -1,4 +1,5 @@
 export enum JobStatus {
+  None = 'None',
   // Application sent
   Applied = 'Applied',
   // Company response
