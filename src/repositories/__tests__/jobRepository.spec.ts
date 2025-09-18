@@ -58,7 +58,7 @@ describe('JobRepository', () => {
   });
 
   it('list() throws GetAllJobsError on internal error', async () => {
-    // Simule une corruption interne
+    // Simulate internal corruption
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     repo.jobs = null;
