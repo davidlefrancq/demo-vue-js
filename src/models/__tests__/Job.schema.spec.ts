@@ -9,7 +9,7 @@ const validJob = {
   city: 'Paris',
   remote: true,
   salary: 45000,
-  status: JobStatus.Applied,
+  status: JobStatus.None,
   like: JobLikeState.None,
 };
 
@@ -33,6 +33,12 @@ describe('JobSchema', () => {
 
   it('should validate a job with disliked state', () => {
     const job = { ...validJob, like: JobLikeState.Disliked };
+    const result = JobSchema.safeParse(job);
+    expect(result.success).toBe(true);
+  });
+
+  it('should validate a job with status Applied', () => {
+    const job = { ...validJob, status: JobStatus.Applied };
     const result = JobSchema.safeParse(job);
     expect(result.success).toBe(true);
   });

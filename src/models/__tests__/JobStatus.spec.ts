@@ -3,6 +3,7 @@ import { JobStatus } from '../JobStatus';
 
 describe('JobStatus enum', () => {
   it('should have correct values', () => {
+    expect(JobStatus.None).toBe('None');
     expect(JobStatus.Applied).toBe('Applied');
     expect(JobStatus.UnderReview).toBe('UnderReview');
     expect(JobStatus.Shortlisted).toBe('Shortlisted');

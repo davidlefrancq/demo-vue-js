@@ -51,7 +51,7 @@ describe('JobSanitizer', () => {
       status: '<script>alert(1)</script><b>NotAStatus</b><img src=x onerror=alert(1)/>' as any,
     };
     const sanitized = JobSanitizer.sanitize(partial as JobType);
-    expect(Object.values(JobStatus)).not.toContain(sanitized.status);
+    expect(Object.values(JobStatus)).toContain(sanitized.status);
   });
 
   it('should reject invalid enum like value', () => {
@@ -61,6 +61,6 @@ describe('JobSanitizer', () => {
       like: '<script>alert(1)</script><b>SuperLiked</b><img src=x onerror=alert(1)/>' as any,
     };
     const sanitized = JobSanitizer.sanitize(partial as JobType);
-    expect(Object.values(JobLikeState)).not.toContain(sanitized.like);
+    expect(Object.values(JobLikeState)).toContain(sanitized.like);
   });
 });
