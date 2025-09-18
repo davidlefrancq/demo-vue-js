@@ -5,6 +5,8 @@ import type { JobType } from '@/models/Job.schema';
 import { JobLikeState } from '@/models/JobLikeState';
 import { JobStatus } from '@/models/JobStatus';
 
+const TARGET_CITIES = ['lyon', 'saint-étienne'];
+
 export class JobsService {
   private store = useJobsStore();
   private repo = new JobRepository();
@@ -61,7 +63,7 @@ export class JobsService {
     if (job.remote) score += 8;
 
     // City
-    if (job.city.toLowerCase().match(/lyon|saint-étienne/i)) score += 6;
+    if (TARGET_CITIES.includes(job.city.toLowerCase())) score += 6;
     else score -= 5;
 
     // Salary
