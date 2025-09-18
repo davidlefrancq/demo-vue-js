@@ -1,0 +1,74 @@
+[
+  {
+    "id": "job-1",
+    "title": "Développeur Frontend Vue.js",
+    "city": "Paris",
+    "remote": true,
+    "salary": 42000,
+    "status": "Applied",
+    "like": "Liked"
+  },
+  {
+    "id": "job-2",
+    "title": "Ingénieur Backend Node.js",
+    "city": "Lyon",
+    "remote": false,
+    "salary": 48000,
+    "status": "UnderReview",
+    "like": "None"
+  },
+  {
+    "id": "job-3",
+    "title": "Product Owner",
+    "city": "Marseille",
+    "remote": true,
+    "salary": 53000,
+    "status": "Shortlisted",
+    "like": "Disliked"
+  },
+  {
+    "id": "job-4",
+    "title": "UX/UI Designer",
+    "city": "Nantes",
+    "remote": false,
+    "salary": 39000,
+    "status": "Rejected",
+    "like": "None"
+  },
+  {
+    "id": "job-5",
+    "title": "DevOps Engineer",
+    "city": "Toulouse",
+    "remote": true,
+    "salary": 55000,
+    "status": "InterviewPlanned",
+    "like": "Liked"
+  },
+  {
+    "id": "job-6",
+    "title": "QA Analyst",
+    "city": "Bordeaux",
+    "remote": false,
+    "salary": 37000,
+    "status": "OfferMade",
+    "like": "None"
+  },
+  {
+    "id": "job-7",
+    "title": "Scrum Master",
+    "city": "Lille",
+    "remote": true,
+    "salary": 47000,
+    "status": "Negotiation",
+    "like": "Liked"
+  },
+  {
+    "id": "job-8",
+    "title": "Data Scientist",
+    "city": "Nice",
+    "remote": false,
+    "salary": 60000,
+    "status": "Hired",
+    "like": "Disliked"
+  }
+]
