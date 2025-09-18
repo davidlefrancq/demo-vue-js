@@ -14,7 +14,7 @@ export class GetAllCompaniesError extends CompanyRepositoryError {
 
 export class GetCompanyByIdError extends CompanyRepositoryError {
   constructor() {
-    super('Failed to retrieve company by id.');
+    super('Company not found with the provided ID.');
     this.name = 'GetCompanyByIdError';
   }
 }
