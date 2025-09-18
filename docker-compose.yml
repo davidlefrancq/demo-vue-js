@@ -7,7 +7,7 @@ services:
     ports:
       - "8080:8080" # Expose the http-server port
     volumes:
-      - data_volume:/app:ro # Montage en lecture seule pour la prod, modifie en rw pour dev
+      - data_volume:/app:ro # Read-only mount for production, change to rw for development
     environment:
       - NODE_ENV=production
     restart: unless-stopped
