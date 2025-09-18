@@ -50,27 +50,28 @@ export class JobsService {
 
   // Calculate interest score for a job
   interestScore(job: JobType): number {
-    // Like/Dislike: priorité
+    // Like/Dislike: priority
     if (job.like === JobLikeState.Disliked) return 0;
-    // Statuts fermés : score nul
-    if (job.status === JobStatus.Rejected || job.status === JobStatus.Hired) return 0;
+    // Closed/negative status: score 0
+    if (job.status === JobStatus.Rejected) return 0;
 
     let score = 0;
 
     // Remote
     if (job.remote) score += 8;
 
-    // Ville
+    // City
     if (job.city.toLowerCase().match(/lyon|saint-étienne/i)) score += 6;
     else score -= 5;
 
-    // Salaire
+    // Salary
     if (job.salary >= 45000) score += 12;
     else if (job.salary < 35000) score -= 8;
 
-    // Statut avancé
+    // Advanced status
     if (job.status === JobStatus.InterviewPlanned) score += 15;
     if (job.status === JobStatus.OfferMade) score += 20;
+    if (job.status === JobStatus.Hired) score += 30;
 
     // Like
     if (job.like === JobLikeState.Liked) score += 30;

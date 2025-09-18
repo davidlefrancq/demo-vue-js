@@ -39,6 +39,12 @@ describe('JobsService', () => {
 
   // --- interestScore ---
   describe('interestScore', () => {
+    it('score bonus for Hired', () => {
+      const job = makeJob({ like: JobLikeState.Liked, status: JobStatus.Hired });
+      // like +30, remote +8, city +6, salary +12, hired +30
+      expect(service.interestScore(job)).toBe(30 + 8 + 6 + 12 + 30);
+    });
+
     it('score = 0 if disliked', () => {
       const job = makeJob({ like: JobLikeState.Disliked });
       expect(service.interestScore(job)).toBe(0);
