@@ -1,18 +1,19 @@
-FROM node:lts-alpine
+# Step 1 : Build
+FROM node:lts-alpine AS build
 
-# install a simple http server to serve static content
+# Install a simple http server to serve static content
 RUN npm install -g http-server
 
-# set the 'app' folder as working directory
+# Set the 'app' folder as working directory
 WORKDIR /app
 
-# copy 'package.json' and 'package-lock.json' (if available)
+# Copy 'package.json' and 'package-lock.json' (if available)
 COPY package*.json ./
 
-# install project dependencies
+# Install project dependencies
 RUN npm ci
 
-# copy project files and folders to the working directory (e.g., the 'app' folder)
+# Copy project files and folders to the working directory (e.g., the 'app' folder)
 COPY src ./src
 COPY public ./public
 COPY env.d.ts ./
@@ -27,5 +28,15 @@ COPY vite.config.ts ./
 # build the project
 RUN npm run build
 
+# Step 2 : Image finale, uniquement avec le build
+FROM node:lts-alpine AS production
+
+# Set the 'app' folder as working directory
+WORKDIR /app
+
+# Copy only the 'dist' folder from the 'build' stage
+COPY --from=build /app/dist ./dist
+
+# Command to run the app using http-server
 EXPOSE 8080
 CMD [ "http-server", "dist" ]
