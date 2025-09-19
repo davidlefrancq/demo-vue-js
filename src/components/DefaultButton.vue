@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineEmits } from 'vue';
+import { computed } from 'vue';
 
 const props = defineProps({
   color: {
