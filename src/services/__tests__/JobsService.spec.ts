@@ -20,6 +20,7 @@ describe('JobsService', () => {
       id: '1',
       title: 'Développeur',
       city: 'Lyon',
+      companyId: 'company-1',
       remote: true,
       salary: 50000,
       status: JobStatus.None,

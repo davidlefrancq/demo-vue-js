@@ -1,12 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { JobSchema } from '../Job.schema';
+import { JobSchema, type JobType } from '../Job.schema';
 import { JobStatus } from '../JobStatus';
 import { JobLikeState } from '../JobLikeState';
 
-const validJob = {
+const validJob: JobType = {
   id: 'job-1',
   title: 'Développeur',
   city: 'Paris',
+  companyId: 'company-1',
   remote: true,
   salary: 45000,
   status: JobStatus.None,

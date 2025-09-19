@@ -17,11 +17,24 @@
     <section>
       <h2 class="font-semibold mb-2 mt-6">JobCard</h2>
       <JobCard
-        title="Développeur Vue.js"
-        company="TechCorp"
+        :job="{
+          id: 'demo',
+          title: 'Développeur Vue.js',
+          city: 'Paris',
+          companyId: 'techcorp',
+          remote: true,
+          salary: 50000,
+          status: JobStatus.None,
+          like: JobLikeState.None
+        }"
+        :company="{
+          id: 'techcorp',
+          name: 'TechCorp',
+          location: 'Paris',
+          size: 500,
+          industry: 'Tech'
+        }"
         companyLogo="https://placehold.co/48x48"
-        location="Paris"
-        description="Rejoignez une équipe dynamique pour développer des applications modernes avec Vue.js et Tailwind CSS."
       >
         <template #badges>
           <StatusBadge status="open" label="Ouvert" />
@@ -81,6 +94,8 @@ import StatusBadge from './StatusBadge.vue';
 import LikeButton from './LikeButton.vue';
 import DislikeButton from './DislikeButton.vue';
 import DefaultButton from './DefaultButton.vue';
+import { JobStatus } from '@/models/JobStatus';
+import { JobLikeState } from '@/models/JobLikeState';
 
 const search = ref('');
 const liked = ref(false);

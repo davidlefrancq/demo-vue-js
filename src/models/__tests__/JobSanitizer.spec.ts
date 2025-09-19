@@ -8,6 +8,7 @@ const dirtyJob: Partial<JobType> = {
   id: '<script>alert(1)</script><b>job-1</b><img src=x onerror=alert(1)/>',
   title: '<script>alert(1)</script><b>Developer</b><img src=x onerror=alert(1)/>',
   city: '<script>alert(1)</script><b>Paris</b><img src=x onerror=alert(1)/>',
+  companyId: '<script>alert(1)</script><b>company-1</b><img src=x onerror=alert(1)/>',
   remote: true,
   salary: 50000,
   status: JobStatus.Applied,
@@ -20,6 +21,7 @@ describe('JobSanitizer', () => {
     expect(sanitized.id).toBe('job-1');
     expect(sanitized.title).toBe('Developer');
     expect(sanitized.city).toBe('Paris');
+    expect(sanitized.companyId).toBe('company-1');
   });
 
   it('should keep valid boolean and number fields', () => {
