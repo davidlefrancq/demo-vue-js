@@ -1,5 +1,5 @@
 <template>
-  <div class="jobs-list-page">
+  <div class="p-8">
     <h1 class="text-2xl font-bold mb-6">Liste des offres d'emploi</h1>
     <div class="flex flex-col md:flex-row gap-4 mb-6">
       <SearchBar v-model="search" placeholder="Rechercher un poste, une ville..." />
@@ -14,19 +14,25 @@
       Aucune offre ne correspond à votre recherche.
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <JobCard
+      <div
         v-for="job in filteredJobs"
         :key="job.id"
-        :job="job"
-        :company="getCompany(job.companyId)"
-        :companyLogo="undefined"
-      />
+        @click="goToJobDetail(job.id)"
+        class="cursor-pointer hover:scale-[1.01] transition-transform"
+      >
+        <JobCard
+          :job="job"
+          :company="getCompany(job.companyId)"
+          :companyLogo="undefined"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import SearchBar from '@/components/SearchBar.vue';
 import FilterBar from '@/components/FilterBar.vue';
 import JobCard from '@/components/JobCard.vue';
@@ -35,9 +41,18 @@ import { CompanyRepository } from '@/repositories/CompanyRepository';
 import type { JobType } from '@/models/Job.schema';
 import type { CompanyType } from '@/models/Company.schema';
 
+/** Job detail open function */
+const router = useRouter();
+function goToJobDetail(jobId: string) {
+  router.push({ name: 'job-detail', params: { id: jobId } });
+}
+
+/** Job list functions */
+// Repositories
 const jobRepo = new JobRepository();
 const companyRepo = new CompanyRepository();
 
+// State
 const jobs = ref<JobType[]>([]);
 const companies = ref<CompanyType[]>([]);
 const search = ref('');
@@ -58,6 +73,7 @@ const filterOptions = computed(() => [
   ]
 ]);
 
+// Computed filtered jobs
 const filteredJobs = computed(() => {
   let result = jobs.value;
   // Search filter
@@ -81,10 +97,12 @@ const filteredJobs = computed(() => {
   return result;
 });
 
+// Helper to get company by ID
 function getCompany(companyId: string): CompanyType | null {
   return companies.value.find(c => c.id === companyId) || null;
 }
 
+// Handlers
 function onFilterChange(val: (string | number | null)[]) {
   selectedFilters.value = val;
 }
@@ -98,9 +116,3 @@ onMounted(async () => {
   companies.value = await companyRepo.list();
 });
 </script>
-
-<style scoped>
-.jobs-list-page {
-  padding: 2rem;
-}
-</style>
