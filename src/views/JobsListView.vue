@@ -50,7 +50,7 @@ function goToJobDetail(jobId: string) {
 /** Job list functions */
 // Repositories
 const jobsService = JobsService.getInstance();
-const companiesService = CompaniesService.getInstance()
+const companiesService = CompaniesService.getInstance();
 
 // State
 const jobs = ref<JobType[]>([]);
