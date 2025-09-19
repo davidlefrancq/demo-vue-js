@@ -41,7 +41,10 @@ describe('JobDetailView', () => {
   beforeEach(() => {
     router = createRouter({
       history: createWebHistory(),
-      routes: [{ path: '/jobs/:id', name: 'job-detail', component: JobDetailView }]
+      routes: [
+        { path: '/', name: 'home', component: { template: '<div />' } },
+        { path: '/jobs/:id', name: 'job-detail', component: JobDetailView }
+      ]
     })
     vi.clearAllMocks()
   })
