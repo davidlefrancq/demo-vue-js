@@ -19,7 +19,7 @@
         :key="job.id"
         :job="job"
         :company="getCompany(job.companyId)"
-        :companyLogo="getCompanyLogo(job.companyId)"
+        :companyLogo="undefined"
       />
     </div>
   </div>
@@ -83,12 +83,6 @@ const filteredJobs = computed(() => {
 
 function getCompany(companyId: string): CompanyType | null {
   return companies.value.find(c => c.id === companyId) || null;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function getCompanyLogo(companyId: string): string | undefined {
-  // Placeholder: you could use a real URL/logo if available
-  return undefined;
 }
 
 function onFilterChange(val: (string | number | null)[]) {
