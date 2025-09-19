@@ -1,19 +1,23 @@
+
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount, flushPromises } from '@vue/test-utils'
 import JobsListView from '../JobsListView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import type { Router } from 'vue-router'
+import { createPinia, setActivePinia } from 'pinia'
 
-import { JobRepository } from '@/repositories/JobRepository'
-import { CompanyRepository } from '@/repositories/CompanyRepository'
-
-vi.mock('@/repositories/JobRepository')
-vi.mock('@/repositories/CompanyRepository')
+import { JobsService } from '@/services/JobsService'
+import { CompaniesService } from '@/services/CompaniesService'
 
 import type { JobType } from '@/models/Job.schema'
 import type { CompanyType } from '@/models/Company.schema'
 import { JobStatus } from '@/models/JobStatus'
 import { JobLikeState } from '@/models/JobLikeState'
+import type { JobsServiceMock } from '@/tests/__mocks__/JobsServiceMock'
+import type { CompaniesServiceMock } from '@/tests/__mocks__/CompaniesServiceMock'
+
+vi.mock('@/services/JobsService')
+vi.mock('@/services/CompaniesService')
 
 const mockJobs: JobType[] = [
   {
@@ -57,6 +61,8 @@ const mockCompanies: CompanyType[] = [
 
 describe('JobsListView', () => {
   let router: Router
+  let jobsServiceMock: JobsServiceMock
+  let companiesServiceMock: CompaniesServiceMock
 
   beforeEach(() => {
     router = createRouter({
@@ -66,14 +72,25 @@ describe('JobsListView', () => {
         { path: '/jobs', name: 'jobs-list', component: JobsListView }
       ]
     })
+    setActivePinia(createPinia())
     vi.clearAllMocks()
+    jobsServiceMock = {
+      getById: vi.fn(),
+      list: vi.fn(),
+    }
+    companiesServiceMock = {
+      getById: vi.fn(),
+      list: vi.fn(),
+    }
+    vi.spyOn(JobsService, 'getInstance').mockReturnValue(jobsServiceMock as unknown as JobsService)
+    vi.spyOn(CompaniesService, 'getInstance').mockReturnValue(companiesServiceMock as unknown as CompaniesService)
   })
 
   it('affiche la liste des offres', async () => {
-    vi.spyOn(JobRepository.prototype, 'list').mockResolvedValueOnce(mockJobs)
-    vi.spyOn(CompanyRepository.prototype, 'list').mockResolvedValueOnce(mockCompanies)
+    jobsServiceMock.list.mockResolvedValueOnce(mockJobs)
+    companiesServiceMock.list.mockResolvedValueOnce(mockCompanies)
     const wrapper = mount(JobsListView, {
-      global: { plugins: [router] }
+      global: { plugins: [router, createPinia()] }
     })
     await flushPromises()
     expect(wrapper.text()).toContain('Développeur')
@@ -83,20 +100,20 @@ describe('JobsListView', () => {
   })
 
   it('affiche le message aucune offre si vide', async () => {
-    vi.spyOn(JobRepository.prototype, 'list').mockResolvedValueOnce([])
-    vi.spyOn(CompanyRepository.prototype, 'list').mockResolvedValueOnce(mockCompanies)
+    jobsServiceMock.list.mockResolvedValueOnce([])
+    companiesServiceMock.list.mockResolvedValueOnce(mockCompanies)
     const wrapper = mount(JobsListView, {
-      global: { plugins: [router] }
+      global: { plugins: [router, createPinia()] }
     })
     await flushPromises()
     expect(wrapper.text()).toContain('Aucune offre ne correspond')
   })
 
   it('filtre par recherche', async () => {
-    vi.spyOn(JobRepository.prototype, 'list').mockResolvedValueOnce(mockJobs)
-    vi.spyOn(CompanyRepository.prototype, 'list').mockResolvedValueOnce(mockCompanies)
+    jobsServiceMock.list.mockResolvedValueOnce(mockJobs)
+    companiesServiceMock.list.mockResolvedValueOnce(mockCompanies)
     const wrapper = mount(JobsListView, {
-      global: { plugins: [router] }
+      global: { plugins: [router, createPinia()] }
     })
     await flushPromises()
     // Simule la recherche "Designer"
