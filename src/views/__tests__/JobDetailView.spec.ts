@@ -87,6 +87,7 @@ describe('JobDetailView', () => {
 
   it('affiche une erreur si le service échoue', async () => {
     vi.spyOn(JobsService.prototype, 'getById').mockRejectedValueOnce(new Error('fail'))
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     const wrapper = mount(JobDetailView, {
       global: { plugins: [router] },
       mocks: {
@@ -95,5 +96,6 @@ describe('JobDetailView', () => {
     })
     await flushPromises()
     expect(wrapper.text()).toContain('Aucune offre trouvée')
+    errorSpy.mockRestore()
   })
 })
