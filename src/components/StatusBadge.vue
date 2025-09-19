@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps } from 'vue';
+import { computed } from 'vue';
 
 const statusColors: Record<string, string> = {
   open: 'bg-green-100 text-green-800',

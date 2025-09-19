@@ -42,11 +42,10 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import type { JobType } from '@/models/Job.schema'
 import type { CompanyType } from '@/models/Company.schema';
 
-const props = defineProps<{
+defineProps<{
   job: JobType
   company?: CompanyType | null
   companyLogo?: string
