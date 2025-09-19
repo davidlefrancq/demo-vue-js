@@ -31,6 +31,19 @@ export class JobsService {
     this.store.setItems(jobs);
   }
 
+  // Retourne un job par son id (async, pour cohérence avec le repo)
+  async getById(id: string): Promise<JobType | null> {
+    // On cherche d'abord dans le store (déjà chargé)
+    const found = this.store.items.find((j: JobType) => j.id === id)
+    if (found) return found
+    // Sinon, fallback sur le repo (ex: si le store n'est pas hydraté)
+    try {
+      return await this.repo.getById(id)
+    } catch {
+      return null
+    }
+  }
+
   // Search jobs by text query
   search(query: string): JobType[] {
     const q = query.trim().toLowerCase();
