@@ -48,7 +48,8 @@ onMounted(async () => {
     } else {
       error.value = "Aucune offre trouvée."
     }
-  } catch {
+  } catch (err) {
+    console.error(err)
     error.value = "Aucune offre trouvée."
     job.value = null
   } finally {
