@@ -7,7 +7,7 @@
     "remote": true,
     "salary": 42000,
     "status": "Applied",
-    "like": "Liked"
+    "like": "None"
   },
   {
     "id": "job-2",
