@@ -39,8 +39,8 @@ onMounted(async () => {
   loading.value = true
   error.value = ''
   try {
-    const jobsService = new JobsService()
-    const companiesService = new CompaniesService()
+    const jobsService = JobsService.getInstance()
+    const companiesService = CompaniesService.getInstance()
 
     job.value = await jobsService.getById(jobId)
     if (job.value) {
