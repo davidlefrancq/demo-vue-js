@@ -2,7 +2,7 @@
   <div class="jobs-list-page">
     <h1 class="text-2xl font-bold mb-6">Liste des offres d'emploi</h1>
     <div class="flex flex-col md:flex-row gap-4 mb-6">
-      <SearchBar v-model="search" placeholder="Rechercher un poste, une ville..." @search="onSearch" />
+      <SearchBar v-model="search" placeholder="Rechercher un poste, une ville..." />
       <FilterBar
         v-model="selectedFilters"
         :filters="filterOptions"
@@ -89,10 +89,6 @@ function getCompany(companyId: string): CompanyType | null {
 function getCompanyLogo(companyId: string): string | undefined {
   // Placeholder: you could use a real URL/logo if available
   return undefined;
-}
-
-function onSearch() {
-  // Optional: additional logic on search
 }
 
 function onFilterChange(val: (string | number | null)[]) {
