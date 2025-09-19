@@ -46,10 +46,10 @@ onMounted(async () => {
     if (job.value) {
       company.value = await companiesService.getById(job.value.companyId)
     } else {
-      error.value = "Offre non trouvée."
+      error.value = "Aucune offre trouvée."
     }
   } catch {
-    error.value = "Offre non trouvée."
+    error.value = "Aucune offre trouvée."
     job.value = null
   } finally {
     loading.value = false
