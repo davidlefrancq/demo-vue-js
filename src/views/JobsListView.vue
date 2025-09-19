@@ -43,9 +43,9 @@ const companies = ref<CompanyType[]>([]);
 const search = ref('');
 const selectedFilters = ref<(string | number | null)[]>([null, null]);
 
-// Préparer les options de filtres (ville, remote)
+// Prepare filter options (city, remote)
 const filterOptions = computed(() => [
-  // Ville
+  // City
   [
     { label: 'Toutes les villes', value: null },
     ...Array.from(new Set(jobs.value.map(j => j.city))).map(city => ({ label: city, value: city }))
@@ -60,7 +60,7 @@ const filterOptions = computed(() => [
 
 const filteredJobs = computed(() => {
   let result = jobs.value;
-  // Filtre recherche
+  // Search filter
   if (search.value.trim()) {
     const s = search.value.trim().toLowerCase();
     result = result.filter(j =>
@@ -68,7 +68,7 @@ const filteredJobs = computed(() => {
       j.city.toLowerCase().includes(s)
     );
   }
-  // Filtres
+  // Filters
   const [city, remote] = selectedFilters.value;
   if (city) {
     result = result.filter(j => j.city === city);
@@ -87,12 +87,12 @@ function getCompany(companyId: string): CompanyType | null {
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getCompanyLogo(companyId: string): string | undefined {
-  // Placeholder: on pourrait utiliser une vraie URL/logo si disponible
+  // Placeholder: you could use a real URL/logo if available
   return undefined;
 }
 
 function onSearch() {
-  // Optionnel : logique supplémentaire lors de la recherche
+  // Optional: additional logic on search
 }
 
 function onFilterChange(val: (string | number | null)[]) {
