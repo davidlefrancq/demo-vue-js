@@ -17,6 +17,6 @@ app.mount('#app')
 
 // Initialize the JobsService singleton and load jobs at app startup
 const jobsService = JobsService.getInstance();
-jobsService.loadJobs().then(async () => {
-  await jobsService.hydrate();
+jobsService.loadJobs().then(() => {
+  jobsService.hydrate();
 });
