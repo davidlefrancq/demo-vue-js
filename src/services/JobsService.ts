@@ -8,44 +8,77 @@ import { JobStatus } from '@/models/JobStatus';
 const TARGET_CITIES = ['lyon', 'saint-étienne'];
 
 export class JobsService {
-  private store = useJobsStore();
+  private static instance: JobsService | null = null;
   private repo = new JobRepository();
 
+  public static getInstance(): JobsService {
+    if (JobsService.instance === null) {
+      JobsService.instance = new JobsService();
+    }
+    return JobsService.instance;
+  }
+
+  private get store() {
+    return useJobsStore();
+  }
+
   // Hydrate store from persistence
-  hydrate() {
+  public hydrate() {
     Object.assign(this.store.likes, JobsPersistenceService.loadLikes());
     Object.assign(this.store.statuses, JobsPersistenceService.loadStatuses());
   }
 
   // Persist likes and statuses
-  persistLikes() {
+  private persistLikes() {
     JobsPersistenceService.saveLikes({ ...this.store.likes });
   }
-  persistStatuses() {
+  private persistStatuses() {
     JobsPersistenceService.saveStatuses({ ...this.store.statuses });
   }
 
   // Load jobs from repo and set in store
-  async loadJobs() {
+  public async loadJobs() {
     const jobs = await this.repo.list();
     this.store.setItems(jobs);
   }
 
+  public async list(): Promise<JobType[]> {
+    const jobs = this.store.items;
+    const jobsStore = this.store;
+    return jobs.map(job => ({
+      ...job,
+      like: jobsStore.likes[job.id] ?? job.like,
+      status: jobsStore.statuses[job.id] ?? job.status,
+    }));
+  }
+
   // Retourne un job par son id (async, pour cohérence avec le repo)
-  async getById(id: string): Promise<JobType | null> {
+  public async getById(id: string): Promise<JobType | null> {
     // On cherche d'abord dans le store (déjà chargé)
-    const found = this.store.items.find((j: JobType) => j.id === id)
-    if (found) return found
+    const found = this.store.items.find((j: JobType) => j.id === id);
+    if (found) {
+      return {
+        ...found,
+        like: this.store.likes[found.id] ?? found.like,
+        status: this.store.statuses[found.id] ?? found.status,
+      };
+    }
     // Sinon, fallback sur le repo (ex: si le store n'est pas hydraté)
     try {
-      return await this.repo.getById(id)
+      const job = await this.repo.getById(id);
+      if (!job) return null;
+      return {
+        ...job,
+        like: this.store.likes[job.id] ?? job.like,
+        status: this.store.statuses[job.id] ?? job.status,
+      };
     } catch {
-      return null
+      return null;
     }
   }
 
   // Search jobs by text query
-  search(query: string): JobType[] {
+  public search(query: string): JobType[] {
     const q = query.trim().toLowerCase();
     if (!q) return this.store.items;
     return this.store.items.filter((j: JobType) =>
@@ -55,7 +88,7 @@ export class JobsService {
   }
 
   // Filter jobs by city and remote
-  filter(city?: string, remote?: boolean): JobType[] {
+  public filter(city?: string, remote?: boolean): JobType[] {
     return this.store.items.filter((j: JobType) => {
       const cityMatch = city ? j.city === city : true;
       const remoteMatch = remote === undefined ? true : j.remote === remote;
@@ -64,7 +97,7 @@ export class JobsService {
   }
 
   // Calculate interest score for a job
-  interestScore(job: JobType): number {
+  public interestScore(job: JobType): number {
     // Like/Dislike: priority
     if (job.like === JobLikeState.Disliked) return 0;
     // Closed/negative status: score 0
@@ -95,13 +128,13 @@ export class JobsService {
   }
 
   // Set like and persist
-  setLike(jobId: string, like: JobLikeState) {
+  public setLike(jobId: string, like: JobLikeState) {
     this.store.setLike(jobId, like);
     this.persistLikes();
   }
 
   // Set status and persist
-  setStatus(jobId: string, status: JobStatus) {
+  public setStatus(jobId: string, status: JobStatus) {
     this.store.setStatus(jobId, status);
     this.persistStatuses();
   }
