@@ -8,6 +8,10 @@
           <p class="text-sm text-gray-500">{{ company?.name }}</p>
         </div>
       </div>
+      <div class="flex gap-2">
+        <LikeButton :model-value="likeState === 'Liked'" @update:model-value="onLike" @click.stop />
+        <DislikeButton :model-value="likeState === 'Disliked'" @update:model-value="onDislike" @click.stop />
+      </div>
       <slot name="actions"></slot>
     </div>
     <div class="flex flex-wrap gap-2 items-center">
@@ -28,8 +32,8 @@
       <span v-if="job.status" class="inline-block bg-purple-100 text-purple-700 px-2 py-1 rounded text-xs">
         Statut : {{ job.status }}
       </span>
-      <span v-if="job.like" class="inline-block bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">
-        Like : {{ job.like }}
+      <span v-if="likeState !== 'None'" class="inline-block bg-yellow-100 text-yellow-700 px-2 py-1 rounded text-xs">
+        Like : {{ likeState }}
       </span>
     </div>
     <div class="text-gray-700 text-sm line-clamp-3">
@@ -42,12 +46,34 @@
 </template>
 
 <script setup lang="ts">
-import type { JobType } from '@/models/Job.schema'
+import { ref, watch } from 'vue';
+import LikeButton from './LikeButton.vue';
+import DislikeButton from './DislikeButton.vue';
+import type { JobType } from '@/models/Job.schema';
 import type { CompanyType } from '@/models/Company.schema';
+import { JobLikeState } from '@/models/JobLikeState';
+import { JobsService } from '@/services/JobsService';
 
-defineProps<{
-  job: JobType
-  company?: CompanyType | null
-  companyLogo?: string
-}>()
+const props = defineProps<{
+  job: JobType;
+  company?: CompanyType | null;
+  companyLogo?: string;
+}>();
+
+const likeState = ref<JobLikeState>(props.job.like);
+const jobsService = JobsService.getInstance();
+
+watch(() => props.job.like, (val) => {
+  likeState.value = val;
+});
+
+function onLike(val: boolean) {
+  likeState.value = val ? JobLikeState.Liked : JobLikeState.None;
+  jobsService.setLike(props.job.id, likeState.value);
+}
+
+function onDislike(val: boolean) {
+  likeState.value = val ? JobLikeState.Disliked : JobLikeState.None;
+  jobsService.setLike(props.job.id, likeState.value);
+}
 </script>
