@@ -22,6 +22,11 @@ const router = createRouter({
       name: 'shared-demo',
       component: () => import('../components/SharedComponentsDemo.vue'),
     },
+    {
+      path: '/jobs/:id',
+      name: 'job-detail',
+      component: () => import('../views/JobDetailPage.vue'),
+    },
   ],
 })
 
