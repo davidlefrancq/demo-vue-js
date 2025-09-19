@@ -85,6 +85,7 @@ function getCompany(companyId: string): CompanyType | null {
   return companies.value.find(c => c.id === companyId) || null;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function getCompanyLogo(companyId: string): string | undefined {
   // Placeholder: on pourrait utiliser une vraie URL/logo si disponible
   return undefined;
