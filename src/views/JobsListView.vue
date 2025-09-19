@@ -36,10 +36,10 @@ import { useRouter } from 'vue-router';
 import SearchBar from '@/components/SearchBar.vue';
 import FilterBar from '@/components/FilterBar.vue';
 import JobCard from '@/components/JobCard.vue';
-import { JobRepository } from '@/repositories/JobRepository';
-import { CompanyRepository } from '@/repositories/CompanyRepository';
 import type { JobType } from '@/models/Job.schema';
 import type { CompanyType } from '@/models/Company.schema';
+import { JobsService } from '@/services/JobsService';
+import { CompaniesService } from '@/services/CompaniesService';
 
 /** Job detail open function */
 const router = useRouter();
@@ -49,8 +49,8 @@ function goToJobDetail(jobId: string) {
 
 /** Job list functions */
 // Repositories
-const jobRepo = new JobRepository();
-const companyRepo = new CompanyRepository();
+const jobsService = JobsService.getInstance();
+const companiesService = CompaniesService.getInstance()
 
 // State
 const jobs = ref<JobType[]>([]);
@@ -112,7 +112,7 @@ function onResetFilters() {
 }
 
 onMounted(async () => {
-  jobs.value = await jobRepo.list();
-  companies.value = await companyRepo.list();
+  jobs.value = await jobsService.list();
+  companies.value = await companiesService.list();
 });
 </script>
